@@ -285,7 +285,7 @@ function CloseGuiCheck()
 end
 
 AutofarmDelay = 3
-ResetWhenFullBag = false
+ResetWhenFullBag = true
 AutofarmIN = false
 bringpose = CFrame.new(math.random(-5, 5), -100, math.random(-5, 5)) --nvm
 safepart = Instance.new("Part")
