@@ -1,31 +1,15 @@
-AntiAfkState = true
-AutofarmStarted = true
-ImproveFPSenabled = true
-CoinTypes = {"Candy", "Coin"}
-CurrentCoinType = "Coin"
-PositionOfCoinType = 1
-AutofarmDelay = 3
-ResetWhenFullBag = true
-AutofarmIN = true
-
 if not game:IsLoaded() then
 	game.Loaded:Wait()
 end
-SettingsAutofarm = {}
-if _G.AutofarmSettings then
-	SettingsAutofarm = _G.AutofarmSettings
-else
-	_G.AutofarmSettings = {}
-	SettingsAutofarm = {AntiAfk = true, DelayFarm = 3}
-end
-if _G.AutoFarmMM2IsLoaded then return end
-_G.AutoFarmMM2IsLoaded = true
 
-if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("DeviceSelect") then
-    for i,t in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.DeviceSelect.Container.Tablet.Button["MouseButton1Click"])) do
-        t:Fire()
-    end
-end
+D3RenderingDisabled = true
+ImproveFPSenabled = true
+CoinTypes = {"Coin"}
+CurrentCoinType = "Coin"
+PositionOfCoinType = 1
+AutofarmDelay = 2
+ResetWhenFullBag = true
+AutofarmIN = true
 
 Player = game.Players.LocalPlayer
 Players = game.Players
@@ -33,8 +17,6 @@ RunService = game:GetService("RunService")
 CoinCollectedEvent = game.ReplicatedStorage.Remotes.Gameplay.CoinCollected
 RoundStartEvent = game.ReplicatedStorage.Remotes.Gameplay.RoundStart
 RoundEndEvent = game.ReplicatedStorage.Remotes.Gameplay.RoundEndFade
-
--- Anti AFK Function
 
 function AntiAFK()
 	local GC = getconnections or get_signal_cons
@@ -55,7 +37,7 @@ function AntiAFK()
 	end
 end
 
-
+AutofarmStarted = true
 function StartAutofarm()
 	if not AutofarmStarted then
 		AutofarmStarted = true
@@ -65,19 +47,13 @@ function StartAutofarm()
 	end
 end
 
--- Disable 3D Rendering
 
-function Disable3DRender()
-	if not D3RenderingDisabled then
-		D3RenderingDisabled = true
-		RunService:Set3dRenderingEnabled(false)
-	else
-		D3RenderingDisabled = false
-		RunService:Set3dRenderingEnabled(true)
-	end
+if D3RenderingDisabled then
+	RunService:Set3dRenderingEnabled(false)
+else
+	RunService:Set3dRenderingEnabled(true)
 end
 
--- Improve FPS
 
 function ImproveFPS()
 	if not ImproveFPSenabled then
@@ -98,26 +74,6 @@ function ImproveFPS()
 		ImproveFPSenabled = false
 	end
 end
-
-
-function ChangeCoinType(cointype)
-	if cointype then
-		if table.find(CoinTypes, cointype) then
-			CurrentCoinType = cointype
-			PositionOfCoinType = table.find(CoinTypes, cointype)
-			return
-		end
-		return
-	end
-	if PositionOfCoinType ~= table.maxn(CoinTypes) then
-		PositionOfCoinType += 1
-		CurrentCoinType = CoinTypes[PositionOfCoinType]
-	else
-		PositionOfCoinType = 1
-		CurrentCoinType = CoinTypes[PositionOfCoinType]
-	end
-end
-
 
 bringpose = CFrame.new(math.random(-5, 5), -100, math.random(-5, 5))
 safepart = Instance.new("Part")
@@ -183,7 +139,6 @@ RoundEndEvent.OnClientEvent:Connect(function()
 	AutofarmIN = false
 end)
 
--- FPS Optimization
 for _, player1 in pairs(Players:GetChildren()) do
 	player1.CharacterAdded:Connect(function(char)
 		task.wait(0.5)
@@ -215,23 +170,3 @@ Players.PlayerAdded:Connect(function(player1)
 		end
 	end)
 end)
-
--- Configurations
-for Configname, Configvalue in pairs(SettingsAutofarm) do
-	if Configname == "AntiAfk" and Configvalue == true then
-		AntiAFK()
-	elseif Configname == "DelayFarm" and tonumber(Configvalue) and tonumber(Configvalue) < 8 then
-		AutofarmDelay = tonumber(Configvalue)
-	elseif Configname == "StartAutofarm" and Configvalue == true then
-		StartAutofarm()
-	elseif Configname == "ImproveFPS" and Configvalue == true then
-		ImproveFPS()
-	elseif Configname == "Disable3DRendering" and Configvalue == true then
-		Disable3DRender()
-	elseif Configname == "CoinType" and Configvalue then
-		ChangeCoinType(Configvalue)
-	elseif Configname == "ResetWhenFullBag" and Configvalue == true then
-		ResetWhenFullBag = true
-	end
-end
-Disable3DRender()
