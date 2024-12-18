@@ -21,13 +21,12 @@ while true do
     wait()
 end
 
-D3RenderingDisabled = false
+D3RenderingDisabled = true
 ImproveFPSenabled = true
-CoinTypes = {"Coin"}
 CurrentCoinType = "Coin"
 AutofarmDelay = 2
 ResetWhenFullBag = true
-AutofarmIN = true
+
 
 Player = game.Players.LocalPlayer
 Players = game.Players
@@ -77,6 +76,7 @@ function AntiAFK()
 	end
 end
 
+AutofarmIN = true
 AutofarmStarted = true
 function StartAutofarm()
 	if not AutofarmStarted then
