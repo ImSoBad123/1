@@ -75,6 +75,7 @@ function AntiAFK()
 		end)
 	end
 end
+AntiAFK()
 
 AutofarmIN = true
 AutofarmStarted = true
