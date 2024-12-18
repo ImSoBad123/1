@@ -2,6 +2,12 @@ if not game:IsLoaded() then
 	game.Loaded:Wait()
 end
 
+if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("DeviceSelect") then
+    for i,t in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.DeviceSelect.Container.Tablet.Button["MouseButton1Click"])) do
+        t:Fire()
+    end
+end
+
 D3RenderingDisabled = true
 ImproveFPSenabled = true
 CoinTypes = {"Coin"}
