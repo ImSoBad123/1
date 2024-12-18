@@ -2,12 +2,25 @@ if not game:IsLoaded() then
 	game.Loaded:Wait()
 end
 
-wait(5)
-if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("DeviceSelect") then
-    for i,t in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.DeviceSelect.Container.Tablet.Button["MouseButton1Click"])) do
-        t:Fire()
+local playerGui = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
+
+while true do
+    local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
+    if deviceSelect then
+        local button = deviceSelect.Container.Tablet:FindFirstChild("Button")
+        if button then
+            for _, connection in ipairs(getconnections(button.MouseButton1Click)) do
+                if connection.Function then
+                    connection.Function() -- Manually trigger the button function
+                end
+            end
+        end
+    else
+        break -- Exit loop if DeviceSelect is gone
     end
+    wait() -- Avoid spamming too fast
 end
+
 
 D3RenderingDisabled = true
 ImproveFPSenabled = true
