@@ -1,8 +1,7 @@
 local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
 local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
-local gameload = playerGui:FindFirstChild("Loading")
-repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer and playerGui and deviceSelect and not gameload
-wait(2)
+repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer and playerGui and deviceSelect
+wait(1)
 
 
 repeat wait(1) until deviceSelect
@@ -16,6 +15,9 @@ if deviceSelect then
         end
     end
 end
+local gameload = playerGui:FindFirstChild("Loading")
+repeat task.wait() until not gameload
+wait(1)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 ImproveFPSenabled = true
 CurrentCoinType = "Coin"
