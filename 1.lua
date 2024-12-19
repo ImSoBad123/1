@@ -170,6 +170,7 @@ wait(0.5)print("Activate Anti AFK")game:service('Players').LocalPlayer.Idled:con
 
 local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
 local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
+repeat wait(1) and print("Wait Button") until deviceSelect
 if deviceSelect then
     local button = deviceSelect.Container.Tablet:FindFirstChild("Button")
     if button then
