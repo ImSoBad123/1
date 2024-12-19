@@ -4,6 +4,7 @@ end
 
 local playerGui = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
 
+_G.checkmenu = false
 while true do
     local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
     if deviceSelect then
@@ -12,12 +13,13 @@ while true do
             for _, connection in ipairs(getconnections(button.MouseButton1Click)) do
                 if connection.Function then
                     connection.Function()
+		    _G.checkmenu = true
                 end
             end
         end
-    else
-        break
-    end
+        if _G.checkmenu then
+	    break
+	end
     wait()
 end
 
