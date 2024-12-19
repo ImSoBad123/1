@@ -3,7 +3,7 @@ if not game:IsLoaded() then
 end
 
 local DeviceSelect = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("DeviceSelect")
-
+while true do
 if DeviceSelect then
     for _, v in ipairs(getconnections(DeviceSelect.Container.Phone.Button.MouseButton1Click)) do
         if v.Function then
@@ -16,6 +16,7 @@ if DeviceSelect then
     end
     else
     print("not Found DeviceSelected Skipped")
+end
 end
 
 D3RenderingDisabled = true
