@@ -4,19 +4,19 @@ end
 
 local playerGui = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
 while true do
-    if PlayerGui then
-        local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
-        if deviceSelect then 
-            local button = deviceSelect.Container.Tablet:FindFirstChild("Button")
-            if Button then
-                for _, v in ipairs(getconnections(Button.MouseButton1Click)) do
-                    if v.Function then
-    	                print("Select Device")
-                        v.Function()
-                    end
+    local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
+    if deviceSelect then
+        local button = deviceSelect.Container.Tablet:FindFirstChild("Button")
+        if button then
+            for _, v in ipairs(getconnections(Button.MouseButton1Click)) do
+                if v.Function then
+    	            print("Select Device")
+                    v.Function()
                 end
             end
         end
+    else
+    break
     end
     wait(1)
 end
