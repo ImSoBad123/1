@@ -1,7 +1,9 @@
 repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
+print("Load 1st")
 local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
 local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
 repeat task.wait() until deviceSelect
+print("Device Select Loaded")
 wait(1)
 if deviceSelect then
     local button = deviceSelect.Container.Tablet:FindFirstChild("Button")
@@ -15,6 +17,7 @@ if deviceSelect then
 end
 local gameload = playerGui:FindFirstChild("Loading")
 repeat task.wait() until not gameload
+print("Game Loaded")
 wait(1)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 ImproveFPSenabled = true
