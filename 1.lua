@@ -1,4 +1,5 @@
 repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
+wait(5)
 print("Load 1st")
 local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
 local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
