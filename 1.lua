@@ -1,6 +1,20 @@
-repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
-wait(8)
+local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
+local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
+repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer and playerGui and deviceSelect
+wait(2)
 
+
+repeat wait(1) until deviceSelect
+if deviceSelect then
+    local button = deviceSelect.Container.Tablet:FindFirstChild("Button")
+    if button then
+        for _, v in ipairs(getconnections(button.MouseButton1Click)) do
+            if v.Function then
+                v.Function()
+            end
+        end
+    end
+end
 
 D3RenderingDisabled = true
 ImproveFPSenabled = true
@@ -163,16 +177,3 @@ else
     game:GetService("RunService"):Set3dRenderingEnabled(false)
 end
 
-local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
-local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
-repeat wait(1) until deviceSelect
-if deviceSelect then
-    local button = deviceSelect.Container.Tablet:FindFirstChild("Button")
-    if button then
-        for _, v in ipairs(getconnections(button.MouseButton1Click)) do
-            if v.Function then
-                v.Function()
-            end
-        end
-    end
-end
