@@ -2,20 +2,8 @@ if not game:IsLoaded() then
 	game.Loaded:Wait()
 end
 
-local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
-local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
-while true do
-    local button = deviceSelect.Container.Tablet:FindFirstChild("Button")
-    if button then
-        for _, v in ipairs(getconnections(Button.MouseButton1Click)) do
-            if v.Function then
-    	        print("Select Device")
-                v.Function()
-            end
-        end
-    end
-    wait(1)
-end
+wait(5)
+
 
 D3RenderingDisabled = true
 ImproveFPSenabled = true
@@ -179,3 +167,16 @@ Players.PlayerAdded:Connect(function(player1)
 	end)
 end)
 wait(0.5)print("Activate Anti AFK")game:service('Players').LocalPlayer.Idled:connect(function()game:service('VirtualUser'):CaptureController()game:service('VirtualUser'):ClickButton2(Vector2.new())print("Roblox tried kicking you but I didn't let them!")end)
+
+local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
+local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
+if deviceSelect then
+    local button = deviceSelect.Container.Tablet:FindFirstChild("Button")
+    if button then
+        for _, v in ipairs(getconnections(button.MouseButton1Click)) do
+            if v.Function then
+                v.Function()
+            end
+        end
+    end
+end
