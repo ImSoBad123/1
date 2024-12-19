@@ -12,9 +12,6 @@ while true do
             end
         end
     end
-    if v.Function then
-        break
-    end
 end
 
 D3RenderingDisabled = true
