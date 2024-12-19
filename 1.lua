@@ -43,14 +43,6 @@ function StartAutofarm()
 	end
 end
 
-
-if D3RenderingDisabled then
-	RunService:Set3dRenderingEnabled(false)
-else
-	RunService:Set3dRenderingEnabled(true)
-end
-
-
 function ImproveFPS()
 	if not ImproveFPSenabled then
 		ImproveFPSenabled = true
@@ -168,9 +160,15 @@ Players.PlayerAdded:Connect(function(player1)
 end)
 wait(0.5)print("Activate Anti AFK")game:service('Players').LocalPlayer.Idled:connect(function()game:service('VirtualUser'):CaptureController()game:service('VirtualUser'):ClickButton2(Vector2.new())print("Roblox tried kicking you but I didn't let them!")end)
 
+if D3RenderingDisabled then
+	RunService:Set3dRenderingEnabled(false)
+else
+	RunService:Set3dRenderingEnabled(true)
+end
+
 local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
 local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
-repeat wait(1) and print("Wait Button") until deviceSelect
+repeat wait(1) until deviceSelect
 if deviceSelect then
     local button = deviceSelect.Container.Tablet:FindFirstChild("Button")
     if button then
