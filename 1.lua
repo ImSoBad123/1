@@ -12,6 +12,9 @@ while true do
             end
         end
     end
+    if not DeviceSelect then
+	break
+    end
 end
 
 D3RenderingDisabled = true
