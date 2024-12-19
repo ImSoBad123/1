@@ -161,9 +161,9 @@ end)
 wait(0.5)print("Activate Anti AFK")game:service('Players').LocalPlayer.Idled:connect(function()game:service('VirtualUser'):CaptureController()game:service('VirtualUser'):ClickButton2(Vector2.new())print("Roblox tried kicking you but I didn't let them!")end)
 
 if D3RenderingDisabled then
-	RunService:Set3dRenderingEnabled(false)
+    game:GetService("RunService"):Set3dRenderingEnabled(false)
 else
-	RunService:Set3dRenderingEnabled(true)
+    game:GetService("RunService"):Set3dRenderingEnabled(false)
 end
 
 local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
