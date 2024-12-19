@@ -1,18 +1,23 @@
+
 if not game:IsLoaded() then
 	game.Loaded:Wait()
 end
 
-local DeviceSelect = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("DeviceSelect")
+local PlayerGui = game.Players.LocalPlayer:FindFirstChild("PlayerGui")
 while true do
-    if DeviceSelect then
-        for _, v in ipairs(getconnections(DeviceSelect.Container.Phone.Button.MouseButton1Click)) do
-            if v.Function then
-    	        print("Select Device")
-                v.Function()
+    if PlayerGui then
+        local Button = PlayerGui:FindFirstChild("DeviceSelect").Container.Phone:FindFirstChild("Button")
+        if Button then 
+            for _, v in ipairs(getconnections(Button.MouseButton1Click)) do
+                if v.Function then
+    	            print("Select Device")
+                    v.Function()
+                end
             end
         end
     end
-    if not DeviceSelect then
+    if not PlayerGui or not Button then
+	print("Not Found Device Selected")
 	break
     end
 end
