@@ -1,5 +1,3 @@
-
-
 if not game:IsLoaded() then
 	game.Loaded:Wait()
 end
@@ -19,10 +17,6 @@ while true do
                 end
             end
         end
-    end
-    if not PlayerGui or not Button then
-	print("Not Found Device Selected")
-	break
     end
 end
 
