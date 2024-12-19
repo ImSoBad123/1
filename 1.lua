@@ -171,6 +171,7 @@ Players.PlayerAdded:Connect(function(player1)
 end)
 wait(0.5)print("Activate Anti AFK")game:service('Players').LocalPlayer.Idled:connect(function()game:service('VirtualUser'):CaptureController()game:service('VirtualUser'):ClickButton2(Vector2.new())print("Roblox tried kicking you but I didn't let them!")end)
 
+wait(10)
 if D3RenderingDisabled then
     game:GetService("RunService"):Set3dRenderingEnabled(false)
 else
