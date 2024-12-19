@@ -1,11 +1,11 @@
 repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
-wait(5)
 print("Load 1st")
-local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
-local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
-repeat task.wait() until deviceSelect
+local waitload = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("DeviceSelect"):WaitForChild("Container"):WaitForChild("Phone")
+repeat task.wait() until waitload
 print("Device Select Loaded")
 wait(1)
+local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
+local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
 if deviceSelect then
     local button = deviceSelect.Container.Tablet:FindFirstChild("Button")
     if button then
