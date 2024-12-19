@@ -1,8 +1,5 @@
-if not game:IsLoaded() then
-	game.Loaded:Wait()
-end
-
-wait(5)
+repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
+wait(8)
 
 
 D3RenderingDisabled = true
