@@ -96,7 +96,6 @@ CoinCollectedEvent.OnClientEvent:Connect(function(cointype, current, max)
 	if cointype == CurrentCoinType and tonumber(current) == tonumber(max) then
 		AutofarmIN = false
 			Player.Character.Humanoid.Health = 0
-		end
 	end
 end)
 
@@ -168,7 +167,3 @@ Players.PlayerAdded:Connect(function(player1)
 	end)
 end)
 wait(0.5)print("Activate Anti AFK")game:service('Players').LocalPlayer.Idled:connect(function()game:service('VirtualUser'):CaptureController()game:service('VirtualUser'):ClickButton2(Vector2.new())print("Roblox tried kicking you but I didn't let them!")end)
-
-wait(10)
-
-
