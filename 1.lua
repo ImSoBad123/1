@@ -5,12 +5,17 @@ end
 local DeviceSelect = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("DeviceSelect")
 
 if DeviceSelect then
-    for _, v in ipairs(DeviceSelect.Container.Phone.Button.MouseButton1Click)) do
+    for _, v in ipairs(getconnections(DeviceSelect.Container.Phone.Button.MouseButton1Click)) do
         if v.Function then
+	    print("Select Device")
             v.Function()
     	break
+        else
+            print("Not Found")
         end
     end
+    else
+    print("not Found DeviceSelected Skipped")
 end
 
 D3RenderingDisabled = true
