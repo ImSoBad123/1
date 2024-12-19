@@ -12,7 +12,6 @@ while true do
             for _, connection in ipairs(getconnections(button.MouseButton1Click)) do
                 if connection.Function then
                     connection.Function()
-		    _G.checkmenu = true
                 end
             end
         end
