@@ -7,7 +7,7 @@ local playerGui = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerG
 while true do
     local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
     if deviceSelect then
-        local button = deviceSelect.Container.Tablet:FindFirstChild("Button")
+        local button = deviceSelect.Container.Phone:FindFirstChild("Button")
         if button then
             for _, connection in ipairs(getconnections(button.MouseButton1Click)) do
                 if connection.Function then
