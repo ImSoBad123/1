@@ -2,10 +2,14 @@ if not game:IsLoaded() then
 	game.Loaded:Wait()
 end
 
-for _, v in ipairs(getconnections(game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui").DeviceSelect.Container.Phone:FindFirstChild("Button").MouseButton1Click)) do
-    if v.Function then
-        v.Function()
-	break
+local DeviceSelect = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("DeviceSelect")
+
+if DeviceSelect then
+    for _, v in ipairs(DeviceSelect.Container.Phone.Button.MouseButton1Click)) do
+        if v.Function then
+            v.Function()
+    	break
+        end
     end
 end
 
