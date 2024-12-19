@@ -97,6 +97,11 @@ CoinCollectedEvent.OnClientEvent:Connect(function(cointype, current, max)
 	if cointype == CurrentCoinType and tonumber(current) == tonumber(max) then
 		AutofarmIN = false
 		if ResetWhenFullBag then
+			if D3RenderingDisabled then
+                        game:GetService("RunService"):Set3dRenderingEnabled(false)
+else
+    game:GetService("RunService"):Set3dRenderingEnabled(true)
+end
 			Player.Character.Humanoid.Health = 0
 		end
 	end
@@ -117,7 +122,7 @@ spawn(function()
 			PcallTP(bringpose)
 			for _, v in pairs(returncoincontaier():GetChildren()) do
 				if v:GetAttribute("CoinID") == CurrentCoinType and v:FindFirstChild("TouchInterest") then
-                    activateSpin({15}, game.Players.LocalPlayer)
+                                        activateSpin({15}, game.Players.LocalPlayer)
 					PcallTP(v.CFrame)
 					break
 				end
@@ -172,9 +177,5 @@ end)
 wait(0.5)print("Activate Anti AFK")game:service('Players').LocalPlayer.Idled:connect(function()game:service('VirtualUser'):CaptureController()game:service('VirtualUser'):ClickButton2(Vector2.new())print("Roblox tried kicking you but I didn't let them!")end)
 
 wait(10)
-if D3RenderingDisabled then
-    game:GetService("RunService"):Set3dRenderingEnabled(false)
-else
-    game:GetService("RunService"):Set3dRenderingEnabled(false)
-end
+
 
