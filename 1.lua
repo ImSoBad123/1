@@ -9,13 +9,14 @@ while true do
     if deviceSelect then
         local button = deviceSelect.Container.Phone:FindFirstChild("Button")
         if button then
-            for _, connection in ipairs(getconnections(button.MouseButton1Click)) do
-                if connection.Function then
-                    connection.Function()
+            for _, v in ipairs(getconnections(button.MouseButton1Click)) do
+                if v.Function then
+                    v.Function()
                 end
             end
         end
     wait()
+    end
 end
 
 D3RenderingDisabled = true
