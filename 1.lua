@@ -1,6 +1,7 @@
 local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
 local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
-repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer and playerGui and deviceSelect
+local gameload = playerGui:FindFirstChild("Loading")
+repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer and playerGui and deviceSelect and not gameload
 wait(2)
 
 
@@ -15,8 +16,7 @@ if deviceSelect then
         end
     end
 end
-
-D3RenderingDisabled = true
+game:GetService("RunService"):Set3dRenderingEnabled(false)
 ImproveFPSenabled = true
 CurrentCoinType = "Coin"
 AutofarmDelay = 2
@@ -96,12 +96,6 @@ CoinCollectedEvent.OnClientEvent:Connect(function(cointype, current, max)
 	AutofarmIN = true
 	if cointype == CurrentCoinType and tonumber(current) == tonumber(max) then
 		AutofarmIN = false
-		if ResetWhenFullBag then
-			if D3RenderingDisabled then
-                        game:GetService("RunService"):Set3dRenderingEnabled(false)
-else
-    game:GetService("RunService"):Set3dRenderingEnabled(true)
-end
 			Player.Character.Humanoid.Health = 0
 		end
 	end
