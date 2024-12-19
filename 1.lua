@@ -88,12 +88,17 @@ safepart.CFrame = bringpose * CFrame.new(0, -1.2, 0)
 safepart.Parent = workspace
 
 function returncoincontaier()
-	for _, v in workspace:GetChildren() do
-		if v:FindFirstChild("CoinContainer") and v:IsA("Model") then
-			return v:FindFirstChild("CoinContainer")
-		end
-	end
-	return false
+    local coinContainers = {}
+    for _, v in workspace:GetChildren() do
+        if v:FindFirstChild("CoinContainer") and v:IsA("Model") then
+            table.insert(coinContainers, v:FindFirstChild("CoinContainer"))
+        end
+    end
+    if #coinContainers > 0 then
+        local randomIndex = math.random(1, #coinContainers)
+        return coinContainers[randomIndex]
+    end
+    return false
 end
 
 CoinCollectedEvent.OnClientEvent:Connect(function(cointype, current, max)
