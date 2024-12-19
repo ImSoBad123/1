@@ -4,7 +4,6 @@ end
 
 local playerGui = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
 
-_G.checkmenu = false
 while true do
     local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
     if deviceSelect then
@@ -17,9 +16,6 @@ while true do
                 end
             end
         end
-        if _G.checkmenu then
-	    break
-	end
     wait()
 end
 
