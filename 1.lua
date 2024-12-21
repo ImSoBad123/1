@@ -21,8 +21,9 @@ repeat task.wait() until not gameload
 print("Game Loaded")
 wait(1)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
-ImproveFPSenabled = true
-CurrentCoinType = "Coin"
+
+ImproveFPSenabled = false
+CurrentCoinType = "SnowToken"
 AutofarmDelay = 2
 ResetWhenFullBag = true
 
@@ -118,17 +119,14 @@ spawn(function()
             PcallTP(bringpose)
             local container = returncoincontainer()
             local children = container:GetChildren()
-            
             if #children > 0 then
                 local randomIndex = math.random(1, #children)
                 local randomChild = children[randomIndex]
-
                 if randomChild:GetAttribute("CoinID") == CurrentCoinType and randomChild:FindFirstChild("TouchInterest") then
                     activateSpin({15}, game.Players.LocalPlayer)
                     PcallTP(randomChild.CFrame)
                 end
             end
-            
             wait(0.2)
             PcallTP(bringpose)
         end
@@ -184,3 +182,27 @@ game:GetService("Players").LocalPlayer.Idled:Connect(function()
     game:GetService("VirtualUser"):ClickButton2(Vector2.new())
     print("Roblox tried kicking you but I didn't let them!")
 end)
+
+local player = game:GetService("Players").LocalPlayer
+local fileName = player.Name .. ".txt"
+
+function changeacc()
+    writefile(fileName, "Yummytool")
+end
+
+while true do
+    local Token = player.PlayerGui.CrossPlatform.Christmas2024.Container.EventFrames.BattlePass.Info.Tokens.Container.TextLabel.Text
+    local sanitizedToken = string.gsub(Token, ",", "") -- Remove commas
+    local tokenValue = tonumber(sanitizedToken)
+    
+    if tokenValue and tokenValue >= 113200 then
+        print("Đã Đủ Token Bắt Đầu Change Acc")
+        changeacc()
+        break
+    else
+        print("Chưa đủ token")
+        print("Token Hiện Tại: " .. (tokenValue or "Không Xác Định"))
+    end
+    
+    wait(5)
+end
