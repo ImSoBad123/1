@@ -19,6 +19,7 @@ end
 local gameload = playerGui:FindFirstChild("Loading")
 repeat task.wait() until not gameload
 print("Game Loaded")
+
 ImproveFPSenabled = true
 CurrentCoinType = "SnowToken"
 tweenspeed = 30
@@ -97,14 +98,20 @@ local function createPlatform()
 end
 createPlatform()
 
-local function updatePlatformPosition(humanoidRootPart)
-    while task.wait() do
-        if humanoidRootPart and humanoidRootPart.Parent then
-            platform.Position = humanoidRootPart.Position - Vector3.new(0, 3.95, 0) -- Giữ ô dưới chân
+-- Function to update the platform's position
+local function updatePlatformPosition()
+    local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    
+    if humanoidRootPart then
+        while task.wait() do
+            if humanoidRootPart.Parent then
+                platform.Position = humanoidRootPart.Position - Vector3.new(0, 3.95, 0) -- Giữ ô dưới chân
+            end
         end
     end
 end
 
+-- Function to move the player with Tweening
 function TweenTP(TargetPosition, Speed)
     local TweenService = game:GetService("TweenService")
     local player = game.Players.LocalPlayer
@@ -112,7 +119,7 @@ function TweenTP(TargetPosition, Speed)
     if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         local humanoidRootPart = player.Character.HumanoidRootPart
 
-        -- Hàm bật/tắt trạng thái đi xuyên vật thể
+        -- Function to set collision
         local function setCollision(character, canCollide)
             for _, part in pairs(character:GetDescendants()) do
                 if part:IsA("BasePart") then
@@ -121,35 +128,36 @@ function TweenTP(TargetPosition, Speed)
             end
         end
 
-        -- Tính toán thời gian dựa trên khoảng cách và tốc độ
+        -- Calculate the duration for the tween
         local function calculateDuration(startPos, endPos, speed)
             local distance = (endPos - startPos).Magnitude
             return distance / speed
         end
 
-        -- Cấu hình Tween
+        -- Create the tween
         local duration = calculateDuration(humanoidRootPart.Position, TargetPosition, Speed)
         local goal = {CFrame = CFrame.new(TargetPosition)}
         local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
         local tween = TweenService:Create(humanoidRootPart, tweenInfo, goal)
 
-        -- Bật chế độ đi xuyên vật thể
+        -- Disable collision during tween
         setCollision(player.Character, false)
 
-        -- Kích hoạt Tween
+        -- Play the tween
         tween:Play()
-        -- Kích hoạt trạng thái bình thường khi Tween kết thúc
         tween.Completed:Connect(function()
-            setCollision(player.Character, true) -- Bật lại va chạm
+            -- Enable collision after tween completes
+            setCollision(player.Character, true)
         end)
     end
 end
 
+-- Loop to handle the autofarm and update the platform's position
 spawn(function()
     while true do
-        if AutofarmStarted and AutofarmIN and Player.Character and returncoincontainer() then
-            TweenTP(returncoincontainer, tweenspeed)
-            updatePlatformPosition(humanoidRootPart)
+        if AutofarmStarted and AutofarmIN and player.Character and returncoincontainer() then
+            TweenTP(returncoincontainer(), tweenspeed) -- Passing the coin container position
+            updatePlatformPosition() -- Update platform position
             wait(0.2)
         end
     end
