@@ -190,19 +190,14 @@ function changeacc()
     writefile(fileName, "Yummytool")
 end
 
-while true do
-    local Token = player.PlayerGui.CrossPlatform.Christmas2024.Container.EventFrames.BattlePass.Info.Tokens.Container.TextLabel.Text
-    local sanitizedToken = string.gsub(Token, ",", "") -- Remove commas
-    local tokenValue = tonumber(sanitizedToken)
+local Token = player.PlayerGui.CrossPlatform.Christmas2024.Container.EventFrames.BattlePass.Info.Tokens.Container.TextLabel.Text
+local sanitizedToken = string.gsub(Token, ",", "")
+local tokenValue = tonumber(sanitizedToken)
 
+while true do
     if tokenValue and tokenValue >= 113200 then
-        print("Đã Đủ Token Bắt Đầu Change Acc")
         changeacc()
         break
-    else
-        print("Chưa đủ token")
-        print("Token Hiện Tại: " .. (tokenValue or "Không Xác Định"))
     end
-
-    wait(5)
+    wait(60)
 end
