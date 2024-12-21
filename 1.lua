@@ -209,6 +209,7 @@ local tokenValue = tonumber(sanitizedToken)
 
 spawn(function()
     while true do
+        if getgenv().changeacc then
         local Token = player.PlayerGui.CrossPlatform.Christmas2024.Container.EventFrames.BattlePass.Info.Tokens.Container.TextLabel.Text
         local sanitizedToken = string.gsub(Token, ",", "")
         local tokenValue = tonumber(sanitizedToken)
@@ -221,5 +222,6 @@ spawn(function()
             print("Chwa ddur Coin")
         end
         wait(100)
+        end
     end
 end)
