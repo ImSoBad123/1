@@ -22,7 +22,7 @@ print("Game Loaded")
 wait(1)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 
-ImproveFPSenabled = false
+ImproveFPSenabled = true
 CurrentCoinType = "SnowToken"
 AutofarmDelay = 2
 ResetWhenFullBag = true
