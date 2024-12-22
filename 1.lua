@@ -23,7 +23,7 @@ wait(1)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 ImproveFPSenabled = true
 CurrentCoinType = "SnowToken"
-tweenspeed = 25
+AutofarmDelay = 2
 ResetWhenFullBag = true
 
 Player = game.Players.LocalPlayer
@@ -33,8 +33,21 @@ CoinCollectedEvent = game.ReplicatedStorage.Remotes.Gameplay.CoinCollected
 RoundStartEvent = game.ReplicatedStorage.Remotes.Gameplay.RoundStart
 RoundEndEvent = game.ReplicatedStorage.Remotes.Gameplay.RoundEndFade
 
-AutofarmIN = false
-AutofarmStarted = false
+local function activateSpin(args, speaker)
+    local spinSpeed = tonumber(args[1]) or 20
+    local character = speaker.Character or speaker.CharacterAdded:Wait()
+    local rootPart = character:WaitForChild("HumanoidRootPart")
+
+    for _, v in pairs(rootPart:GetChildren()) do
+        if v.Name == "Spinning" then v:Destroy() end
+    end
+
+    local Spin = Instance.new("BodyAngularVelocity")
+    Spin.Name, Spin.Parent, Spin.MaxTorque, Spin.AngularVelocity = "Spinning", rootPart, Vector3.new(0, math.huge, 0), Vector3.new(0, spinSpeed, 0)
+end
+
+AutofarmIN = true
+AutofarmStarted = true
 
 function StartAutofarm()
     if not AutofarmStarted then
@@ -65,36 +78,14 @@ function ImproveFPS()
     end
 end
 
-function Tween(targetCFrame, tweenSpeed)
-    local player = game.Players.LocalPlayer
-    -- Kiểm tra xem người chơi và HumanoidRootPart có tồn tại không
-    if player.Character and player.Character:WaitForChild("HumanoidRootPart") then
-        local humanoid = player.Character:FindFirstChild("Humanoid")
-        local target = player.Character.HumanoidRootPart
-        -- Lấy vị trí hiện tại của HumanoidRootPart
-        local currentPosition = target.CFrame.Position
-        -- Tính toán khoảng cách giữa vị trí hiện tại và vị trí mục tiêu
-        local distance = (targetCFrame.Position - currentPosition).magnitude
-        -- Tính toán thời gian cần thiết để di chuyển với tốc độ cho trước (tốc độ là stud/s)
-        local time = distance / tweenSpeed
-
-        -- Tạo tween cho HumanoidRootPart
-        local tweenInfo = TweenInfo.new(time, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
-        local tween = game:GetService("TweenService"):Create(target, tweenInfo, {CFrame = targetCFrame})
-
-        target.CanCollide = false
-        target.Anchored = true
-
-        -- Bắt đầu tween
-        tween:Play()
-
-        -- Khi tween kết thúc, phục hồi lại các giá trị ban đầu
-        tween.Completed:Connect(function()
-            target.CanCollide = true
-            target.Anchored = false
-        end)
-    end
-end
+bringpose = CFrame.new(math.random(-5, 5), -100, math.random(-5, 5))
+safepart = Instance.new("Part")
+safepart.Anchored = true
+safepart.Massless = true
+safepart.Transparency = 1
+safepart.Size = Vector3.new(2048, 0.5, 2048)
+safepart.CFrame = bringpose * CFrame.new(0, -1.2, 0)
+safepart.Parent = workspace
 
 function returncoincontainer()
     for _, v in workspace:GetChildren() do
@@ -102,84 +93,81 @@ function returncoincontainer()
             return v:FindFirstChild("CoinContainer")
         end
     end
-    return nil  -- Trả về nil khi không tìm thấy CoinContainer
+    return false
 end
 
--- New function to return the closest CoinContainer
-function returnClosestCoinContainer()
-    local coinContainer = returncoincontainer()
-    if coinContainer then
-        local closestContainer = nil
-        local closestDistance = math.huge
-        for _, v in pairs(coinContainer:GetChildren()) do
-            if v:GetAttribute("CoinID") == CurrentCoinType and v:FindFirstChild("TouchInterest") then
-                local distance = (Player.Character.HumanoidRootPart.Position - v.Position).Magnitude
-                if distance < closestDistance then
-                    closestDistance = distance
-                    closestContainer = v
-                end
-            end
-        end
-        return closestContainer
+CoinCollectedEvent.OnClientEvent:Connect(function(cointype, current, max)
+    AutofarmIN = true
+    if cointype == CurrentCoinType and tonumber(current) == tonumber(max) then
+        AutofarmIN = false
+        Player.Character.Humanoid.Health = 0
     end
-    return nil  -- Trả về nil nếu không có container gần nhất
+end)
+
+function PcallTP(Position)
+    if Player.Character then
+        if Player.Character:FindFirstChild("HumanoidRootPart") then
+            Player.Character.HumanoidRootPart.CFrame = Position
+        end
+    end
 end
 
 spawn(function()
     while true do
-        if AutofarmStarted and AutofarmIN and Player.Character then
-            local closestContainer = returnClosestCoinContainer()
-            if closestContainer then
-                -- Thực hiện tween chỉ 1 lần
-                Tween(closestContainer.CFrame, tweenspeed)
+        if AutofarmStarted and AutofarmIN and Player.Character and returncoincontainer() then
+            PcallTP(bringpose)
+            local container = returncoincontainer()
+            local children = container:GetChildren()
+            if #children > 0 then
+                local randomIndex = math.random(1, #children)
+                local randomChild = children[randomIndex]
+                if randomChild:GetAttribute("CoinID") == CurrentCoinType and randomChild:FindFirstChild("TouchInterest") then
+                    activateSpin({15}, game.Players.LocalPlayer)
+                    PcallTP(randomChild.CFrame)
+                    wait(0.2)
+                    PcallTP(bringpose)
+                    task.wait(AutofarmDelay)
+                end
             end
         end
-        wait(0.1)
-    end
-end)
-
-local previousCurrent = 0  -- Biến lưu giá trị current trước đó
-
-CoinCollectedEvent.OnClientEvent:Connect(function(cointype, current, max)
-    AutofarmIN = true
-    if cointype == CurrentCoinType then
-        -- Kiểm tra nếu current đã tăng thêm 1 giá trị so với giá trị trước đó
-        if tonumber(current) == tonumber(previousCurrent) + 1 then
-            local closestContainer = returnClosestCoinContainer()
-            if closestContainer then
-                Tween(closestContainer.CFrame, tweenspeed)
-            end
-        end
-
-        -- Cập nhật giá trị current trước đó
-        previousCurrent = tonumber(current)
-
-        -- Nếu current đạt max, reset lại và xử lý hết vòng chơi
-        if tonumber(current) == tonumber(max) then
-            AutofarmIN = false
-            Player.Character.Humanoid.Health = 0
-        end
+        task.wait(0.01)
     end
 end)
 
 RoundStartEvent.OnClientEvent:Connect(function()
-    AutofarmStarted = true 
+    if AutofarmStarted then Player.Character.HumanoidRootPart.CFrame = bringpose end
     AutofarmIN = true
 end)
 
--- Lắng nghe sự kiện RoundEnd
 RoundEndEvent.OnClientEvent:Connect(function()
-    AutofarmStarted = false 
     AutofarmIN = false
 end)
 
--- Cải thiện FPS khi nhân vật mới gia nhập
+for _, player1 in pairs(Players:GetChildren()) do
+    player1.CharacterAdded:Connect(function(char)
+        task.wait(0.5)
+        if ImproveFPSenabled then
+            for _, part in pairs(char:GetChildren()) do
+                if part:IsA("Accessory") then
+                    part:Destroy()
+                end
+                if part.Name == "Radio" then
+                    part:Destroy()
+                end
+            end
+        end
+    end)
+end
+
 Players.PlayerAdded:Connect(function(player1)
     player1.CharacterAdded:Connect(function(char)
         task.wait(0.5)
         if ImproveFPSenabled then
             for _, part in pairs(char:GetChildren()) do
-                if part:IsA("Accessory") or part.Name == "Radio" then
+                if part:IsA("Accessory") then
+                    part:Destroy()
+                end
+                if part.Name == "Radio" then
                     part:Destroy()
                 end
             end
@@ -187,7 +175,6 @@ Players.PlayerAdded:Connect(function(player1)
     end)
 end)
 
--- Phòng ngừa AFK
 wait(0.5)
 print("Activate Anti AFK")
 game:GetService("Players").LocalPlayer.Idled:Connect(function()
@@ -195,3 +182,50 @@ game:GetService("Players").LocalPlayer.Idled:Connect(function()
     game:GetService("VirtualUser"):ClickButton2(Vector2.new())
     print("Roblox tried kicking you but I didn't let them!")
 end)
+
+function click(a)
+    game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X + a.AbsoluteSize.X / 2,
+        a.AbsolutePosition.Y + 50, 0, true, a, 1)
+    wait(1)
+    game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X + a.AbsoluteSize.X / 2,
+        a.AbsolutePosition.Y + 50, 0, false, a, 1)
+end
+
+if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("DeviceSelect") then
+    repeat
+        wait()
+        pcall(function()
+            if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("DeviceSelect") and game:GetService("Players").LocalPlayer.PlayerGui.DeviceSelect:FindFirstChild("Container") then
+                click(game:GetService("Players").LocalPlayer.PlayerGui.DeviceSelect.Container.Tablet.Icon)
+            end
+        end)
+    until not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("DeviceSelect")
+end
+local l_ProfileData_0 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("ProfileData"));
+local plr = game.Players.LocalPlayer
+local VirtualUser = game:service "VirtualUser"
+game:service("Players").LocalPlayer.Idled:connect(
+    function()
+        VirtualUser:CaptureController()
+        VirtualUser:ClickButton2(Vector2.new())
+    end
+)
+while wait() do
+    if l_ProfileData_0.Materials.Owned.SnowTokens2024 >= 800 then
+        local args = {
+            [1] = 1
+        }
+
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Events"):WaitForChild("Generic")
+            :WaitForChild("BuyTiers"):FireServer(unpack(args))
+        for i = 1, 20 do
+            local args = {
+                [1] = i
+            }
+
+            print(game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Events"):WaitForChild(
+                "Generic")
+                :WaitForChild("ClaimBattlePassReward"):FireServer(unpack(args)))
+        end
+    end
+end
