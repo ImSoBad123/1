@@ -119,19 +119,18 @@ spawn(function()
             PcallTP(bringpose)
             local container = returncoincontainer()
             local children = container:GetChildren()
-            local randomIndex = math.random(1, #children)
-            local randomChild = children[randomIndex]
-            if #children > 0 and randomChild:FindFirstChild("TouchInterest") then            
-                if randomChild:GetAttribute("CoinID") == CurrentCoinType then
+            if #children > 0 then
+                local randomIndex = math.random(1, #children)
+                local randomChild = children[randomIndex]
+                if randomChild:GetAttribute("CoinID") == CurrentCoinType and randomChild:FindFirstChild("TouchInterest") then
                     activateSpin({15}, game.Players.LocalPlayer)
                     PcallTP(randomChild.CFrame)
-                    wait(0.2)
-                    PcallTP(bringpose)
                 end
-            task.wait(AutofarmDelay)
             end
+            wait(0.2)
+            PcallTP(bringpose)
         end
-        wait(0.1)
+        task.wait(AutofarmDelay)
     end
 end)
 
