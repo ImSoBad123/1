@@ -134,6 +134,13 @@ spawn(function()
     end
 end)
 
+while true do
+    wait(1)
+    if not AutofarmIN then
+        PcallTP(0x09fadfc2ff8dac74)
+    end
+end
+
 RoundStartEvent.OnClientEvent:Connect(function()
     if AutofarmStarted then Player.Character.HumanoidRootPart.CFrame = bringpose end
     AutofarmIN = true
@@ -228,4 +235,49 @@ while wait() do
                 :WaitForChild("ClaimBattlePassReward"):FireServer(unpack(args)))
         end
     end
+end
+
+local HttpService = game:GetService("HttpService")
+local player = game.Players.LocalPlayer
+local Token = player.PlayerGui.CrossPlatform.Christmas2024.Container.EventFrames.BattlePass.Info.Tokens.Container.TextLabel.Text
+local sanitizedToken = string.gsub(Token, ",", "")
+local tokenValue = tonumber(sanitizedToken)
+repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
+local Data =
+{
+    ["embeds"]= {
+        {            
+            ["title"]= "SnowFlake Check";
+            ["color"]= tonumber(0x7269da);
+            
+            ["fields"]= {
+                {
+                    ["name"]= "Username:",
+                    ["value"]= '' .. Player.Name .. '',
+                    ["inline"]= true
+                },
+                {
+                    ["name"]= "SnowFlake",
+                    ["value"]= 'Token:' .. tokenValue .. '',
+                    ["inline"]= true
+                },
+            }              
+        }
+    }
+}
+
+Request = http_request or request or HttpPost or syn.request
+local Final1 = {Url = getgenv().Webhook , Body = HttpService:JSONEncode(Data), Method = "POST", Headers = {["Content-Type"]="application/json"}}
+
+Request(Final1)
+
+while true do
+    if getgenv().Webhook and WHSendDelays then
+        Request(Final1)
+        task.wait(WHSendDelays)
+    else
+        print("Not found wh link or whsenddelays")
+        break
+    end
+    task.wait(0.1)
 end
