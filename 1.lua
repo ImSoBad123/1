@@ -195,33 +195,3 @@ game:GetService("Players").LocalPlayer.Idled:Connect(function()
     game:GetService("VirtualUser"):ClickButton2(Vector2.new())
     print("Roblox tried kicking you but I didn't let them!")
 end)
-local player = game:GetService("Players").LocalPlayer
-local fileName = player.Name .. ".txt"
-
-function changeacc()
-    writefile(fileName, "Yummytool")
-end
-local player = game.Players.LocalPlayer
-local Token = player.PlayerGui.CrossPlatform.Christmas2024.Container.EventFrames.BattlePass.Info.Tokens.Container.TextLabel.Text
-
-local sanitizedToken = string.gsub(Token, ",", "")
-local tokenValue = tonumber(sanitizedToken)
-
-spawn(function()
-    while true do
-        if getgenv().changeacc then
-        local Token = player.PlayerGui.CrossPlatform.Christmas2024.Container.EventFrames.BattlePass.Info.Tokens.Container.TextLabel.Text
-        local sanitizedToken = string.gsub(Token, ",", "")
-        local tokenValue = tonumber(sanitizedToken)
-
-        if tokenValue and tokenValue >= 113200 then
-            print("affsa")
-            changeacc()
-            break
-            else
-            print("Chwa ddur Coin")
-        end
-        wait(100)
-        end
-    end
-end)
