@@ -27,8 +27,6 @@ game:GetService("Players").LocalPlayer.Idled:Connect(function()
     print("Roblox tried kicking you but I didn't let them!")
 end)
 
-game:GetService("RunService"):Set3dRenderingEnabled(false)
-
 wait(1)
 ImproveFPSenabled = true
 CurrentCoinType = "SnowToken"
@@ -155,7 +153,9 @@ spawn(function()
                 if randomChild:GetAttribute("CoinID") == CurrentCoinType and randomChild:FindFirstChild("TouchInterest") then
                     activateSpin({15}, game.Players.LocalPlayer)
                     PcallTP(randomChild.CFrame)
-                    repeat task.wait() until not randomChild:FindFirstChild("TouchInterest") or wait(3)
+                    while randomChild:FindFirstChild("TouchInterest") do
+                        task.wait()
+                    end
                     PcallTP(bringpose)
                     task.wait(AutofarmDelay)
                 end
