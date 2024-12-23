@@ -25,6 +25,7 @@ ImproveFPSenabled = true
 CurrentCoinType = "SnowToken"
 AutofarmDelay = 2
 ResetWhenFullBag = true
+AntiIdle = true
 
 Player = game.Players.LocalPlayer
 Players = game.Players
@@ -183,9 +184,12 @@ Players.PlayerAdded:Connect(function(player1)
 end)
 
 wait(0.5)
-print("Activate Anti AFK")
-game:GetService("Players").LocalPlayer.Idled:Connect(function()
+
+while true do
+    if AntiIdle then
     game:GetService("VirtualUser"):CaptureController()
     game:GetService("VirtualUser"):ClickButton2(Vector2.new())
     print("Roblox tried kicking you but I didn't let them!")
-end)
+    task.wait(300)
+    end
+end
