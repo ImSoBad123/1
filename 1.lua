@@ -132,6 +132,7 @@ spawn(function()
                         activateSpin({15}, game.Players.LocalPlayer)
                         PcallTP(randomChild.CFrame)
                         while randomChild:FindFirstChild("TouchInterest") do
+                            PcallTP(randomChild.CFrame)
                             task.wait()
                         end
                         PcallTP(bringpose)
