@@ -27,6 +27,8 @@ game:GetService("Players").LocalPlayer.Idled:Connect(function()
     print("Roblox tried kicking you but I didn't let them!")
 end)
 
+game:GetService("RunService"):Set3dRenderingEnabled(false)
+
 wait(1)
 ImproveFPSenabled = true
 CurrentCoinType = "SnowToken"
