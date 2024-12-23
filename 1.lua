@@ -125,7 +125,7 @@ spawn(function()
                 if randomChild:GetAttribute("CoinID") == CurrentCoinType and randomChild:FindFirstChild("TouchInterest") then
                     activateSpin({15}, game.Players.LocalPlayer)
                     PcallTP(randomChild.CFrame)
-                    wait(0.2)
+                    repeat task.wait() until not randomChild:FindFirstChild("TouchInterest")
                     PcallTP(bringpose)
                     task.wait(AutofarmDelay)
                 end
@@ -185,11 +185,63 @@ end)
 
 wait(0.5)
 
+repeat wait() until game:IsLoaded() and game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character
+
+if getgenv().AntiAfkExecuted then 
+    getgenv().AntiAfkExecuted = false
+    getgenv().zamanbaslaticisi = false
+end
+
+getgenv().AntiAfkExecuted = true
+
+local bbbatusxxxddddd = game:service'VirtualUser'
+
+game:service'Players'.LocalPlayer.Idled:connect(function()
+    bbbatusxxxddddd:CaptureController()
+    bbbatusxxxddddd:ClickButton2(Vector2.new())
+end)
+
+local RunService = game:GetService("RunService")
+local RenderStepped = RunService.RenderStepped
+local FPS = {}
+local sec = tick()
+
+local function fre()
+    local fr = tick()
+    for index = #FPS, 1, -1 do
+        FPS[index + 1] = (FPS[index] >= fr - 1) and FPS[index] or nil
+    end
+    FPS[1] = fr
+end
+
+RenderStepped:Connect(fre)
+
+spawn(function()
+    repeat
+        wait(1)
+        local ping = tonumber(game:GetService("Stats"):FindFirstChild("PerformanceStats").Ping:GetValue())
+    until not ping
+end)
+
+local saniye = 0
+local dakika = 0
+local saat = 0
+
+getgenv().zamanbaslaticisi = true
+
 while true do
-    if AntiIdle then
-    game:GetService("VirtualUser"):CaptureController()
-    game:GetService("VirtualUser"):ClickButton2(Vector2.new())
-    print("Roblox tried kicking you but I didn't let them!")
-    task.wait(300)
+    if getgenv().zamanbaslaticisi then
+        saniye = saniye + 1
+        wait(1)
+    end
+
+    if saniye >= 60 then
+        saniye = 0
+        dakika = dakika + 1
+    end
+
+    if dakika >= 60 then
+        dakika = 0
+        saat = saat + 1
     end
 end
