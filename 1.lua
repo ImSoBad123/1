@@ -19,7 +19,7 @@ end
 local gameload = playerGui:FindFirstChild("Loading")
 repeat task.wait() until not gameload
 print("Game Loaded")
---hah
+--haha
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 
 print("Activate Anti AFK")
@@ -42,6 +42,7 @@ RunService = game:GetService("RunService")
 CoinCollectedEvent = game.ReplicatedStorage.Remotes.Gameplay.CoinCollected
 RoundStartEvent = game.ReplicatedStorage.Remotes.Gameplay.RoundStart
 RoundEndEvent = game.ReplicatedStorage.Remotes.Gameplay.RoundEndFade
+LastCurrent = 0 -- Initialize to prevent nil value
 
 local function activateSpin(args, speaker)
     local spinSpeed = tonumber(args[1]) or 20
@@ -53,38 +54,32 @@ local function activateSpin(args, speaker)
     end
 
     local Spin = Instance.new("BodyAngularVelocity")
-    Spin.Name, Spin.Parent, Spin.MaxTorque, Spin.AngularVelocity = "Spinning", rootPart, Vector3.new(0, math.huge, 0), Vector3.new(0, spinSpeed, 0)
+    Spin.Name = "Spinning"
+    Spin.Parent = rootPart
+    Spin.MaxTorque = Vector3.new(0, math.huge, 0)
+    Spin.AngularVelocity = Vector3.new(0, spinSpeed, 0)
 end
 
 AutofarmIN = true
 AutofarmStarted = true
 
 function StartAutofarm()
-    if not AutofarmStarted then
-        AutofarmStarted = true
-        AutofarmIN = true
-    else
-        AutofarmStarted = false
-    end
+    AutofarmStarted = not AutofarmStarted
+    AutofarmIN = AutofarmStarted
 end
 
 function ImproveFPS()
-    if not ImproveFPSenabled then
-        ImproveFPSenabled = true
+    ImproveFPSenabled = not ImproveFPSenabled
+    if ImproveFPSenabled then
         for _, player in pairs(Players:GetChildren()) do
             if player.Character then
                 for _, part in pairs(player.Character:GetChildren()) do
-                    if part:IsA("Accessory") then
-                        part:Destroy()
-                    end
-                    if part.Name == "Radio" then
+                    if part:IsA("Accessory") or part.Name == "Radio" then
                         part:Destroy()
                     end
                 end
             end
         end
-    else
-        ImproveFPSenabled = false
     end
 end
 
@@ -103,11 +98,11 @@ function returncoincontainer()
             return v:FindFirstChild("CoinContainer")
         end
     end
-    return false
+    return nil
 end
 
 local lastChangeTime = tick()
-local rejoinDelay = 300 -- 5 phút
+local rejoinDelay = 300 -- 5 minutes
 
 CoinCollectedEvent.OnClientEvent:Connect(function(cointype, current, max)
     AutofarmIN = true
@@ -115,31 +110,25 @@ CoinCollectedEvent.OnClientEvent:Connect(function(cointype, current, max)
         AutofarmIN = false
         Player.Character.Humanoid.Health = 0
     end
-    
-    -- Cập nhật thời gian nếu current thay đổi
+
     if tonumber(current) ~= LastCurrent then
         lastChangeTime = tick()
         LastCurrent = tonumber(current)
     end
 end)
 
--- Kiểm tra giá trị current mỗi giây
 task.spawn(function()
     while true do
         task.wait(1)
         if tick() - lastChangeTime > rejoinDelay then
-            -- Rejoin server
             game:GetService("TeleportService"):Teleport(game.PlaceId, Player)
         end
     end
 end)
 
-
 function PcallTP(Position)
-    if Player.Character then
-        if Player.Character:FindFirstChild("HumanoidRootPart") then
-            Player.Character.HumanoidRootPart.CFrame = Position
-        end
+    if Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
+        Player.Character.HumanoidRootPart.CFrame = Position
     end
 end
 
@@ -169,16 +158,17 @@ spawn(function()
     end
 end)
 
-
 while true do
     wait(1)
     if not AutofarmIN then
-        PcallTP(0x09fadfc2ff8dac74)
+        PcallTP(CFrame.new(0, -97, 0)) -- Fixed invalid CFrame
     end
 end
 
 RoundStartEvent.OnClientEvent:Connect(function()
-    if AutofarmStarted then Player.Character.HumanoidRootPart.CFrame = bringpose end
+    if AutofarmStarted then
+        Player.Character.HumanoidRootPart.CFrame = bringpose
+    end
     AutofarmIN = true
 end)
 
@@ -191,10 +181,7 @@ for _, player1 in pairs(Players:GetChildren()) do
         task.wait(0.5)
         if ImproveFPSenabled then
             for _, part in pairs(char:GetChildren()) do
-                if part:IsA("Accessory") then
-                    part:Destroy()
-                end
-                if part.Name == "Radio" then
+                if part:IsA("Accessory") or part.Name == "Radio" then
                     part:Destroy()
                 end
             end
@@ -207,10 +194,7 @@ Players.PlayerAdded:Connect(function(player1)
         task.wait(0.5)
         if ImproveFPSenabled then
             for _, part in pairs(char:GetChildren()) do
-                if part:IsA("Accessory") then
-                    part:Destroy()
-                end
-                if part.Name == "Radio" then
+                if part:IsA("Accessory") or part.Name == "Radio" then
                     part:Destroy()
                 end
             end
