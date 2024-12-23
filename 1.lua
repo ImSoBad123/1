@@ -19,7 +19,9 @@ end
 local gameload = playerGui:FindFirstChild("Loading")
 repeat task.wait() until not gameload
 print("Game Loaded")
+--hah
 game:GetService("RunService"):Set3dRenderingEnabled(false)
+
 print("Activate Anti AFK")
 game:GetService("Players").LocalPlayer.Idled:Connect(function()
     game:GetService("VirtualUser"):CaptureController()
@@ -143,27 +145,30 @@ end
 
 spawn(function()
     while true do
-        if AutofarmStarted and AutofarmIN and Player.Character and returncoincontainer() then
-            PcallTP(bringpose)
+        if AutofarmStarted and AutofarmIN and Player.Character then
             local container = returncoincontainer()
-            local children = container:GetChildren()
-            if #children > 0 then
-                local randomIndex = math.random(1, #children)
-                local randomChild = children[randomIndex]
-                if randomChild:GetAttribute("CoinID") == CurrentCoinType and randomChild:FindFirstChild("TouchInterest") then
-                    activateSpin({15}, game.Players.LocalPlayer)
-                    PcallTP(randomChild.CFrame)
-                    while randomChild:FindFirstChild("TouchInterest") do
-                        task.wait()
+            if container then
+                PcallTP(bringpose)
+                local children = container:GetChildren()
+                if #children > 0 then
+                    local randomIndex = math.random(1, #children)
+                    local randomChild = children[randomIndex]
+                    if randomChild:GetAttribute("CoinID") == CurrentCoinType and randomChild:FindFirstChild("TouchInterest") then
+                        activateSpin({15}, game.Players.LocalPlayer)
+                        PcallTP(randomChild.CFrame)
+                        while randomChild:FindFirstChild("TouchInterest") do
+                            task.wait()
+                        end
+                        PcallTP(bringpose)
+                        task.wait(AutofarmDelay)
                     end
-                    PcallTP(bringpose)
-                    task.wait(AutofarmDelay)
                 end
             end
         end
         task.wait(0.01)
     end
 end)
+
 
 while true do
     wait(1)
@@ -178,7 +183,6 @@ RoundStartEvent.OnClientEvent:Connect(function()
 end)
 
 RoundEndEvent.OnClientEvent:Connect(function()
-    if AutofarmStarted then Player.Character.HumanoidRootPart.CFrame = bringpose end
     AutofarmIN = false
 end)
 
