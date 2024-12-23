@@ -28,7 +28,6 @@ game:GetService("Players").LocalPlayer.Idled:Connect(function()
 end)
 
 wait(1)
-game:GetService("RunService"):Set3dRenderingEnabled(false)
 ImproveFPSenabled = true
 CurrentCoinType = "SnowToken"
 AutofarmDelay = 2
@@ -154,7 +153,7 @@ spawn(function()
                 if randomChild:GetAttribute("CoinID") == CurrentCoinType and randomChild:FindFirstChild("TouchInterest") then
                     activateSpin({15}, game.Players.LocalPlayer)
                     PcallTP(randomChild.CFrame)
-                    repeat task.wait() until not randomChild:FindFirstChild("TouchInterest")
+                    repeat task.wait() until not randomChild:FindFirstChild("TouchInterest") or wait(3)
                     PcallTP(bringpose)
                     task.wait(AutofarmDelay)
                 end
