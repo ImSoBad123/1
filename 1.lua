@@ -110,20 +110,6 @@ CoinCollectedEvent.OnClientEvent:Connect(function(cointype, current, max)
         AutofarmIN = false
         Player.Character.Humanoid.Health = 0
     end
-
-    if tonumber(current) ~= LastCurrent then
-        lastChangeTime = tick()
-        LastCurrent = tonumber(current)
-    end
-end)
-
-task.spawn(function()
-    while true do
-        task.wait(1)
-        if tick() - lastChangeTime > rejoinDelay then
-            game:GetService("TeleportService"):Teleport(game.PlaceId, Player)
-        end
-    end
 end)
 
 function PcallTP(Position)
