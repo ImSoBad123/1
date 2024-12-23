@@ -19,7 +19,7 @@ end
 local gameload = playerGui:FindFirstChild("Loading")
 repeat task.wait() until not gameload
 print("Game Loaded")
---haha
+--hahah
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 
 print("Activate Anti AFK")
