@@ -178,6 +178,7 @@ RoundStartEvent.OnClientEvent:Connect(function()
 end)
 
 RoundEndEvent.OnClientEvent:Connect(function()
+    if AutofarmStarted then Player.Character.HumanoidRootPart.CFrame = bringpose end
     AutofarmIN = false
 end)
 
