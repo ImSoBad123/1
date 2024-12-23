@@ -97,13 +97,34 @@ function returncoincontainer()
     return false
 end
 
+local lastChangeTime = tick()
+local rejoinDelay = 300 -- 5 phút
+
 CoinCollectedEvent.OnClientEvent:Connect(function(cointype, current, max)
     AutofarmIN = true
     if cointype == CurrentCoinType and tonumber(current) == tonumber(max) then
         AutofarmIN = false
         Player.Character.Humanoid.Health = 0
     end
+    
+    -- Cập nhật thời gian nếu current thay đổi
+    if tonumber(current) ~= LastCurrent then
+        lastChangeTime = tick()
+        LastCurrent = tonumber(current)
+    end
 end)
+
+-- Kiểm tra giá trị current mỗi giây
+task.spawn(function()
+    while true do
+        task.wait(1)
+        if tick() - lastChangeTime > rejoinDelay then
+            -- Rejoin server
+            game:GetService("TeleportService"):Teleport(game.PlaceId, Player)
+        end
+    end
+end)
+
 
 function PcallTP(Position)
     if Player.Character then
