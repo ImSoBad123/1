@@ -19,6 +19,14 @@ end
 local gameload = playerGui:FindFirstChild("Loading")
 repeat task.wait() until not gameload
 print("Game Loaded")
+
+print("Activate Anti AFK")
+game:GetService("Players").LocalPlayer.Idled:Connect(function()
+    game:GetService("VirtualUser"):CaptureController()
+    game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+    print("Roblox tried kicking you but I didn't let them!")
+end)
+
 wait(1)
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 ImproveFPSenabled = true
@@ -203,7 +211,3 @@ Players.PlayerAdded:Connect(function(player1)
         end
     end)
 end)
-
-wait(0.5)
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/evxncodes/mainroblox/main/anti-afk", true))()
