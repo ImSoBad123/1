@@ -158,11 +158,9 @@ spawn(function()
     end
 end)
 
-while true do
+while not AutofarmIN do
     wait(1)
-    if not AutofarmIN then
-        PcallTP(CFrame.new(0, -97, 0)) -- Fixed invalid CFrame
-    end
+    PcallTP(CFrame.new(0, -97, 0)) -- Fixed invalid CFrame
 end
 
 RoundStartEvent.OnClientEvent:Connect(function()
