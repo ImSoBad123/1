@@ -21,7 +21,6 @@ repeat task.wait() until not gameload
 print("Game Loaded")
 --hahah
 game:GetService("RunService"):Set3dRenderingEnabled(false)
-
 print("Activate Anti AFK")
 game:GetService("Players").LocalPlayer.Idled:Connect(function()
     game:GetService("VirtualUser"):CaptureController()
@@ -34,7 +33,8 @@ ImproveFPSenabled = true
 CurrentCoinType = "SnowToken"
 AutofarmDelay = 2
 ResetWhenFullBag = true
-AntiIdle = true
+antibug = true
+
 
 Player = game.Players.LocalPlayer
 Players = game.Players
@@ -141,6 +141,28 @@ spawn(function()
             end
         end
         task.wait(0.01)
+    end
+end)
+
+local current_snow = game:GetService("Players").LocalPlayer.PlayerGui.CrossPlatform.Christmas2024.Container.EventFrames.BattlePass.Info.Tokens.Container.TextLabel.Text
+current_snow = string.gsub(current_snow, ",", "")
+
+spawn(function()
+    while true do
+        if antibug then
+            local initial_snow = current_snow
+            task.wait(300)
+            local snow_now = game:GetService("Players").LocalPlayer.PlayerGui.CrossPlatform.Christmas2024.Container.EventFrames.BattlePass.Info.Tokens.Container.TextLabel.Text
+            snow_now = string.gsub(snow_now, ",", "")
+        
+            if initial_snow == snow_now then
+                print("Giá trị không thay đổi: ", snow_now)
+                game.Players.LocalPlayer:kick("Server Bug")
+                else
+                print("giá trị đã thay đổi: ", snow_now)
+            end
+            current_snow = snow_now
+        end
     end
 end)
 
