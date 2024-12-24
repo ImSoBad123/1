@@ -19,6 +19,7 @@ end
 local gameload = playerGui:FindFirstChild("Loading")
 repeat task.wait() until not gameload
 print("Game Loaded")
+game:GetService("RunService"):Set3dRenderingEnabled(false)
 print("Activate Anti AFK")
 game:GetService("Players").LocalPlayer.Idled:Connect(function()
     game:GetService("VirtualUser"):CaptureController()
