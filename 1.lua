@@ -19,8 +19,6 @@ end
 local gameload = playerGui:FindFirstChild("Loading")
 repeat task.wait() until not gameload
 print("Game Loaded")
---hahah
-game:GetService("RunService"):Set3dRenderingEnabled(false)
 print("Activate Anti AFK")
 game:GetService("Players").LocalPlayer.Idled:Connect(function()
     game:GetService("VirtualUser"):CaptureController()
@@ -43,22 +41,6 @@ CoinCollectedEvent = game.ReplicatedStorage.Remotes.Gameplay.CoinCollected
 RoundStartEvent = game.ReplicatedStorage.Remotes.Gameplay.RoundStart
 RoundEndEvent = game.ReplicatedStorage.Remotes.Gameplay.RoundEndFade
 LastCurrent = 0 -- Initialize to prevent nil value
-
-local function activateSpin(args, speaker)
-    local spinSpeed = tonumber(args[1]) or 20
-    local character = speaker.Character or speaker.CharacterAdded:Wait()
-    local rootPart = character:WaitForChild("HumanoidRootPart")
-
-    for _, v in pairs(rootPart:GetChildren()) do
-        if v.Name == "Spinning" then v:Destroy() end
-    end
-
-    local Spin = Instance.new("BodyAngularVelocity")
-    Spin.Name = "Spinning"
-    Spin.Parent = rootPart
-    Spin.MaxTorque = Vector3.new(0, math.huge, 0)
-    Spin.AngularVelocity = Vector3.new(0, spinSpeed, 0)
-end
 
 AutofarmIN = true
 AutofarmStarted = true
@@ -129,13 +111,14 @@ spawn(function()
                     local randomIndex = math.random(1, #children)
                     local randomChild = children[randomIndex]
                     if randomChild:GetAttribute("CoinID") == CurrentCoinType and randomChild:FindFirstChild("TouchInterest") then
-                        activateSpin({15}, game.Players.LocalPlayer)
                         PcallTP(randomChild.CFrame)
                         while randomChild:FindFirstChild("TouchInterest") do
+                            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.W, false, nil)
                             PcallTP(randomChild.CFrame)
                             task.wait()
                         end
                         PcallTP(bringpose)
+                        game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.W, false, nil)
                         task.wait(AutofarmDelay)
                     end
                 end
