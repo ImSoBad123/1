@@ -1,38 +1,8 @@
-
 repeat wait() until game:IsLoaded() and game.ReplicatedStorage and game.ReplicatedStorage:FindFirstChild("MultiboxFramework")
 task.wait(5)
 repeat wait() until require(game:GetService("ReplicatedStorage").MultiboxFramework).Loaded
 if game.PlaceId == 13775256536 then
-    local Players = game:GetService("Players")
-    getgenv().userId = Players:GetUserIdFromNameAsync(getgenv().username)
-    print("send gift")
-    local args = {
-        [1] = {
-            [1] = {
-                [1] = "\226\129\130l",
-                [2] = "GoldenGladiatorCrate",
-                [3] = "Buy1",
-                [4] = getgenv().userId
-            }
-        }
-    }
-
-    game:GetService("ReplicatedStorage"):WaitForChild("NetworkingContainer"):WaitForChild("DataRemote"):FireServer(unpack(args))
-    local args = {
-        [1] = {
-            [1] = {
-                [1] = "\226\129\130g",
-                [2] = "GoldenGladiatorCrate",
-                [3] = "Buy1",
-                [4] = getgenv().userId
-            }
-        }
-    }
-
-    game:GetService("ReplicatedStorage"):WaitForChild("NetworkingContainer"):WaitForChild("DataRemote"):FireServer(unpack(args))
-    task.wait(1)    
-    print("Join PVP")
-    local args = {
+local args = {
         [1] = {
             [1] = {
                 [1] = game:GetService("ReplicatedStorage").IdentifiersContainer
@@ -41,9 +11,8 @@ if game.PlaceId == 13775256536 then
         }
     }
 
-    game:GetService("ReplicatedStorage"):WaitForChild("NetworkingContainer"):WaitForChild("DataRemote"):FireServer(unpack(args))
+game:GetService("ReplicatedStorage"):WaitForChild("NetworkingContainer"):WaitForChild("DataRemote"):FireServer(unpack(args))
 else
-    print("Ingame")
 local VirtualUser = game:service "VirtualUser"
 game:service("Players").LocalPlayer.Idled:connect(
     function()
@@ -62,8 +31,7 @@ VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
 VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
 task.wait(0)
 GuiService.SelectedObject = nil
-
-while wait(15) do
+while true do
     task.wait(0.3)
 
     GuiService.SelectedObject = game:GetService("Players").LocalPlayer.PlayerGui.FinishUI.MatchFinish.MatchFinishFrame.EndOptions.ReturnToLobby.ButtonFrame.ReturnToLobbyButton
