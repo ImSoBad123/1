@@ -63,7 +63,7 @@ VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
 task.wait(0)
 GuiService.SelectedObject = nil
 
-while wait() do
+while wait(15) do
     task.wait(0.3)
 
     GuiService.SelectedObject = game:GetService("Players").LocalPlayer.PlayerGui.FinishUI.MatchFinish.MatchFinishFrame.EndOptions.ReturnToLobby.ButtonFrame.ReturnToLobbyButton
