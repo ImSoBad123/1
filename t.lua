@@ -21,7 +21,6 @@ if game.PlaceId == 13775256536 then
     }
 
     game:GetService("ReplicatedStorage"):WaitForChild("NetworkingContainer"):WaitForChild("DataRemote"):FireServer(unpack(args))
-    wait(1)
     local args = {
         [1] = {
             [1] = {
@@ -48,28 +47,32 @@ if game.PlaceId == 13775256536 then
     game:GetService("ReplicatedStorage"):WaitForChild("NetworkingContainer"):WaitForChild("DataRemote"):FireServer(unpack(args))
 else
     print("Ingame")
-    local ReplicatedStorage = game:GetService("ReplicatedStorage")
-    local TeleportService = game:GetService("TeleportService")
-    local Players = game:GetService("Players")
-
-    local MatchTimer = ReplicatedStorage:WaitForChild("MatchData"):WaitForChild("MatchTimer")
-
-    local function checkTimer()
-        local initialValue = MatchTimer.Value
-        task.wait(5)
-
-        -- Kiểm tra nếu MatchTimer.Value lớn hơn 0 mới thực hiện teleport
-        if MatchTimer.Value > 0 and MatchTimer.Value == initialValue then
-            for _, player in ipairs(Players:GetPlayers()) do
-                if player and player:IsA("Player") then
-                    TeleportService:Teleport(13775256536, player)
-                end
-            end
-        end
+local VirtualUser = game:service "VirtualUser"
+game:service("Players").LocalPlayer.Idled:connect(
+    function()
+        VirtualUser:CaptureController()
+        VirtualUser:ClickButton2(Vector2.new())
     end
-    
-    while true do
-        checkTimer()
-        task.wait(3)
-    end
+)
+repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.FinishUI.MatchFinish.Visible
+repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Match.MatchInfo.AutoSkip.OnAndOff
+local VirtualInputManager = game:GetService('VirtualInputManager')
+local GuiService = game:GetService('GuiService')
+
+task.wait(0.3)
+GuiService.SelectedObject = game:GetService("Players").LocalPlayer.PlayerGui.Match.MatchInfo.AutoSkip.OnAndOff
+VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+task.wait(0)
+GuiService.SelectedObject = nil
+
+while wait() do
+    task.wait(0.3)
+
+    GuiService.SelectedObject = game:GetService("Players").LocalPlayer.PlayerGui.FinishUI.MatchFinish.MatchFinishFrame.EndOptions.ReturnToLobby.ButtonFrame.ReturnToLobbyButton
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+    task.wait(0)
+    GuiService.SelectedObject = nil
+end
 end
