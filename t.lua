@@ -71,3 +71,4 @@ while wait() do
     GuiService.SelectedObject = nil
 end
 end
+getgenv().Loaded = true
