@@ -1,10 +1,10 @@
---getgenv().username = "ayipky"
+getgenv().username = "ayipky"
 repeat task.wait() until game:IsLoaded()
 repeat task.wait() until game.ReplicatedStorage and game.ReplicatedStorage:FindFirstChild("MultiboxFramework") and game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("FrameworkElements"):WaitForChild("ScreenBarrier"):WaitForChild("LoadingTitle").Visible
 repeat task.wait() until game.Players and game.Players.LocalPlayer
 local framework = require(game:GetService("ReplicatedStorage").MultiboxFramework)
 repeat task.wait() until framework and framework.Loaded
-getgenv().Loaded = true
+
 if game.PlaceId == 13775256536 then
     local Players = game:GetService("Players")
     getgenv().userId = Players:GetUserIdFromNameAsync(getgenv().username)
@@ -49,6 +49,19 @@ if game.PlaceId == 13775256536 then
 
     game:GetService("ReplicatedStorage"):WaitForChild("NetworkingContainer"):WaitForChild("DataRemote"):FireServer(unpack(args))
 else
+spawn(function()
+    while true do
+        local args = {
+            [1] = {
+            [1] = {
+            [1] = "\226\129\130^"
+            }
+            }   
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("NetworkingContainer"):WaitForChild("DataRemote"):FireServer(unpack(args))
+        task.wait()
+    end
+end)
 print("Ingame")
 local VirtualUser = game:service "VirtualUser"
 game:service("Players").LocalPlayer.Idled:connect(
@@ -61,14 +74,15 @@ repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.FinishUI.Ma
 repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Match.MatchInfo.AutoSkip.OnAndOff
 local VirtualInputManager = game:GetService('VirtualInputManager')
 local GuiService = game:GetService('GuiService')
-while wait() do
-    task.wait(0.3)
+spawn(function()
+    while wait() do
+        task.wait(0.3)
 
-    GuiService.SelectedObject = game:GetService("Players").LocalPlayer.PlayerGui.FinishUI.MatchFinish.MatchFinishFrame.EndOptions.ReturnToLobby.ButtonFrame.ReturnToLobbyButton
-    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
-    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
-    task.wait(0)
-    GuiService.SelectedObject = nil
+        GuiService.SelectedObject = game:GetService("Players").LocalPlayer.PlayerGui.FinishUI.MatchFinish.MatchFinishFrame.EndOptions.ReturnToLobby.ButtonFrame.ReturnToLobbyButton
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+        task.wait(0)
+        GuiService.SelectedObject = nil
+    end
+end)
 end
-end
-
