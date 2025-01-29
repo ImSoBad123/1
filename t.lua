@@ -1,10 +1,7 @@
---[[getgenv().username = "ayipky"]]
-repeat task.wait() until game:IsLoaded()
-repeat task.wait() until game.ReplicatedStorage and game.ReplicatedStorage:FindFirstChild("MultiboxFramework") and game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("FrameworkElements"):WaitForChild("ScreenBarrier"):WaitForChild("LoadingTitle").Visible
-repeat task.wait() until game.Players and game.Players.LocalPlayer
-local framework = require(game:GetService("ReplicatedStorage").MultiboxFramework)
-repeat task.wait() until framework and framework.Loaded
 
+repeat wait() until game:IsLoaded() and game.ReplicatedStorage and game.ReplicatedStorage:FindFirstChild("MultiboxFramework")
+task.wait(5)
+repeat wait() until require(game:GetService("ReplicatedStorage").MultiboxFramework).Loaded
 if game.PlaceId == 13775256536 then
     local Players = game:GetService("Players")
     getgenv().userId = Players:GetUserIdFromNameAsync(getgenv().username)
