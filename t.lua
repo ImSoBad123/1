@@ -1,7 +1,6 @@
-task.wait(45)
-repeat wait() until game:IsLoaded()
-repeat wait() until game.ReplicatedStorage and game.ReplicatedStorage:FindFirstChild("MultiboxFramework")
-repeat wait() until game.Players and game.Players.LocalPlayer
+repeat task.wait() until game:IsLoaded()
+repeat task.wait() until game.ReplicatedStorage and game.ReplicatedStorage:FindFirstChild("MultiboxFramework") and game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("FrameworkElements"):WaitForChild("ScreenBarrier"):WaitForChild("LoadingTitle").Visible
+repeat task.wait() until game.Players and game.Players.LocalPlayer 
 
 local framework = require(game:GetService("ReplicatedStorage").MultiboxFramework)
 repeat wait() until framework and framework.Loaded
@@ -39,26 +38,27 @@ game:GetService("ReplicatedStorage"):WaitForChild("NetworkingContainer"):WaitFor
 
 else
     print("Ingame")
-    local ReplicatedStorage = game:GetService("ReplicatedStorage")
-    local TeleportService = game:GetService("TeleportService")
-    local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
 
-    local MatchTimer = ReplicatedStorage:WaitForChild("MatchData"):WaitForChild("MatchTimer")
+local MatchTimer = ReplicatedStorage:WaitForChild("MatchData"):WaitForChild("MatchTimer")
 
-    local function checkTimer()
-        local initialValue = MatchTimer.Value
-        task.wait(5)
-        if MatchTimer.Value == initialValue then
-            for _, player in ipairs(Players:GetPlayers()) do
-                if player and player:IsA("Player") then
-                    TeleportService:Teleport(13775256536, player)
-                end
+local function checkTimer()
+    local initialValue = MatchTimer.Value
+    task.wait(5)
+    
+    -- Kiểm tra nếu MatchTimer.Value lớn hơn 0 mới thực hiện teleport
+    if MatchTimer.Value > 0 and MatchTimer.Value == initialValue then
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player and player:IsA("Player") then
+                TeleportService:Teleport(13775256536, player)
             end
         end
     end
+end
 
-    while true do
-        checkTimer()
-        task.wait(5)
-    end
+while true do
+    checkTimer()
+    task.wait(5)
 end
