@@ -5,6 +5,18 @@ repeat task.wait() until game.Players and game.Players.LocalPlayer
 local framework = require(game:GetService("ReplicatedStorage").MultiboxFramework)
 repeat task.wait() until framework and framework.Loaded
 
+function skipwave()
+    local args = {
+        [1] = {
+            [1] = {
+                [1] = "\226\129\130^"
+            }
+        }
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("NetworkingContainer"):WaitForChild("DataRemote"):FireServer(unpack(args))
+end
+
 if game.PlaceId == 13775256536 then
     local Players = game:GetService("Players")
     getgenv().userId = Players:GetUserIdFromNameAsync(getgenv().username)
@@ -66,9 +78,10 @@ else
             end
         end
     end
-
+    
     while true do
+        skipwave()
         checkTimer()
-        task.wait(5)
+        task.wait(3)
     end
 end
