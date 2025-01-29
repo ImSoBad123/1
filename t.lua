@@ -36,7 +36,7 @@ if game.PlaceId == 13775256536 then
     game:GetService("ReplicatedStorage"):WaitForChild("NetworkingContainer"):WaitForChild("DataRemote"):FireServer(unpack(args))
     local plr = game.Players.LocalPlayer
     plr.Character.HumanoidRootPart.CFrame = workspace.Zones.Lobby.RankedPVPZone.CFrame
-    task.wait(1)    
+    task.wait(10)    
     print("Join PVP")
     local args = {
         [1] = {
