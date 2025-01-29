@@ -4,7 +4,7 @@ repeat task.wait() until game.ReplicatedStorage and game.ReplicatedStorage:FindF
 repeat task.wait() until game.Players and game.Players.LocalPlayer
 local framework = require(game:GetService("ReplicatedStorage").MultiboxFramework)
 repeat task.wait() until framework and framework.Loaded
-
+getgenv().Loaded = true
 if game.PlaceId == 13775256536 then
     local Players = game:GetService("Players")
     getgenv().userId = Players:GetUserIdFromNameAsync(getgenv().username)
@@ -71,4 +71,4 @@ while wait() do
     GuiService.SelectedObject = nil
 end
 end
-getgenv().Loaded = true
+
