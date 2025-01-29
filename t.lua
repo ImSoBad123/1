@@ -1,4 +1,4 @@
-getgenv().username = "ayipky"
+--getgenv().username = "ayipky"
 repeat task.wait() until game:IsLoaded()
 repeat task.wait() until game.ReplicatedStorage and game.ReplicatedStorage:FindFirstChild("MultiboxFramework") and game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("FrameworkElements"):WaitForChild("ScreenBarrier"):WaitForChild("LoadingTitle").Visible
 repeat task.wait() until game.Players and game.Players.LocalPlayer
