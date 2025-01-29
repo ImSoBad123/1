@@ -1,4 +1,4 @@
-task.wait(30)
+task.wait(45)
 repeat wait() until game:IsLoaded()
 repeat wait() until game.ReplicatedStorage and game.ReplicatedStorage:FindFirstChild("MultiboxFramework")
 repeat wait() until game.Players and game.Players.LocalPlayer
