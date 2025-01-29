@@ -21,6 +21,7 @@ if game.PlaceId == 13775256536 then
     }
 
     game:GetService("ReplicatedStorage"):WaitForChild("NetworkingContainer"):WaitForChild("DataRemote"):FireServer(unpack(args))
+    wait(1)
     local args = {
         [1] = {
             [1] = {
